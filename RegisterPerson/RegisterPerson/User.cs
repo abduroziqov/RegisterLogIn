@@ -10,19 +10,26 @@
         public User()
         {
         }
+        public User(string fullName, string userName, string password, string phoneNumber)
+        {
+            FullName = fullName;
+            UserName = userName;
+            Password = password;
+            PhoneNumber = phoneNumber;
+        }
 
         public void Options()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n-------Available operations-------\n");
-            Console.WriteLine("1.Sign in          2.Login in \n");
+            Console.WriteLine("\n    -------Available operations-------\n");
+            Console.WriteLine("1.Sign in          2.Login in          3.Delete user\n");
 
-            try
-            {
+           
                 Console.Write("Choose operation number : ");
                 int operationNumber = int.Parse(Console.ReadLine());
-
-                switch (operationNumber)
+                int count = 3;
+            //Console.Clear();
+            switch (operationNumber)
                 {
                     case 1:
                         CreateUser();
@@ -30,21 +37,22 @@
                     case 2:
                         Login();
                         break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Write("Enter operation number in correct format !");
-                Options();
-            }
+                    case 3: 
+                         DeleteUser(); 
+                         break;
+                    default:
+                    Console.Write("Enter operation number in correct format !");
+                    Console.ReadKey();
+                           Options();
+                           break;
+                } 
         }
-
         public void CreateUser()
         {
             try
             {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Green;
+                
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write("Enter Full Name : ");
                 string fullName = Console.ReadLine();
 
@@ -63,16 +71,19 @@
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("This account is already registered!");
+                    IsContinue();
                 }
                 else
                 {
                     File.Create(path1).Close();
                     using (StreamWriter sw = new StreamWriter(path1))
                     {
-                        sw.WriteLine("User Name : " + userName);
-                        sw.WriteLine("Full Name : " + fullName);
-                        sw.WriteLine("Phone Number  : " + phoneNumber);
-                        sw.WriteLine("Password : " + password);
+                        sw.WriteLine($"User Name : {userName}");
+                        sw.WriteLine($"Full Name : {fullName}");
+                        sw.WriteLine($"Phone Number  : {phoneNumber}");
+                        sw.WriteLine($"Password : {password}");
+                        Console.WriteLine("\nUser created successfully!");
+                        IsContinue();
                     }
                 }
             }
@@ -82,13 +93,6 @@
                 Console.WriteLine("Enter information into correct format!");
                 Console.ForegroundColor = ConsoleColor.Green;
                 CreateUser();
-            }
-            finally
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("User created successfully!");
-                Console.ForegroundColor = ConsoleColor.Green;
-                IsContinue();
             }
 
             string path = Path.Combine($"C:\\Register\\{Password}.txt");
@@ -104,7 +108,7 @@
             }
         }
 
-        public static void Login()
+        public void Login()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
 
@@ -122,19 +126,19 @@
             {
                 string fileContents = File.ReadAllText(path);
                 Console.WriteLine(fileContents);
-
+                IsContinue();
             }
             else
             {
-                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("No such account exists");
-                Login();
-                Thread.Sleep(1000);
+                Thread.Sleep(300);
+                IsContinue();
             }
         }
         public void IsContinue()
         {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Do you want continue ?");
             Console.WriteLine("1.Yes           2.No");
             string continueOption = Console.ReadLine();
@@ -148,6 +152,41 @@
             {
                 Console.Clear();
                 Console.WriteLine("Thank you!");
+            }
+        }
+
+        public void DeleteUser()
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+
+            Console.Write("Enter User name: ");
+            string userName = Console.ReadLine();
+
+            Console.Write("Enter Password : ");
+            string password = Console.ReadLine();
+
+            string account = userName + password;
+
+            string path = $@"C:\Register\{account}.txt";
+
+            if (File.Exists(path))
+            {
+                Console.Clear();
+                string fileContents = File.ReadAllText(path);
+                Console.WriteLine(fileContents);
+
+                File.Delete(path);
+                Console.WriteLine("User deleted succesfully.");
+                Thread.Sleep(500);
+               
+                IsContinue();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("No such account exists");
+                Thread.Sleep(3000);
+                IsContinue();
             }
         }
     }
