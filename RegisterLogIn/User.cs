@@ -57,7 +57,7 @@
                 Console.Write("Enter Phone Number : +998");
                 string phoneNumber = Console.ReadLine();
 
-                string path1 = Path.Combine($@"C:\Register\{userName + password}.txt");
+                string path1 = Path.Combine($@"{System.Environment.ProcessPath}\Register\{userName + password}.txt");
 
                 if (File.Exists(path1))
                 {
@@ -76,7 +76,7 @@
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Enter information into correct format!");
@@ -91,7 +91,7 @@
                 IsContinue();
             }
 
-            string path = Path.Combine($"C:\\Register\\{Password}.txt");  
+            string path = Path.Combine($"C:\\Register\\{UserName + Password}.txt");  
 
             if (Directory.Exists(path))
             {
@@ -116,13 +116,12 @@
 
             string account = userName + password;
 
-            string path = $@"C:\Register\{account}.txt";
+            string path = Path.Combine($@"{System.Environment.ProcessPath}\Register\{userName + password}.txt");
 
             if (File.Exists(path))
             {
                 string fileContents = File.ReadAllText(path);
                 Console.WriteLine(fileContents);
-
             }
             else
             {

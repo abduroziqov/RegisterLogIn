@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
            User user = new User();
-            user.Options();
+           user.Options();
         }
     }
 }
